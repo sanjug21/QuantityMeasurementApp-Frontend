@@ -1,9 +1,12 @@
 
-import WelcomePage from "./Components/Welcome/WelcomePage";
+import AppRouter from "./AppRouter";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <WelcomePage />
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
 }
 

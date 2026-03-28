@@ -1,13 +1,21 @@
 import { useState, type ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { signup } from "../../apis/authApi";
+import { useAuth } from "../../context/AuthContext";
+import { APP_ROUTES } from "../../routes";
 import { EyeIcon, EyeSlashIcon } from "./VisibilityIcons";
 
 function SignupForm() {
+    const navigate = useNavigate();
+    const { authenticateWithToken } = useAuth();
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     function handleNameChange(event: ChangeEvent<HTMLInputElement>) {
         setName(event.target.value);
@@ -25,13 +33,38 @@ function SignupForm() {
         setConfirmPassword(event.target.value);
     }
 
-    function handleSignup() {
-        console.log("Signup payload", { name, email, password, confirmPassword });
+    async function handleSignup() {
+        setErrorMessage("");
+
+        if (!name.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
+            setErrorMessage("All fields are required.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setErrorMessage("Password and confirm password must match.");
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            const tokenFromBackend = await signup({
+                username: name,
+                email,
+                password,
+            });
+            authenticateWithToken(tokenFromBackend);
+            navigate(APP_ROUTES.dashboard);
+        } catch {
+            setErrorMessage("Signup failed. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (
         <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl sm:p-8">
-      
+
 
             <div className="space-y-4">
                 <div>
@@ -117,10 +150,15 @@ function SignupForm() {
                 <button
                     type="button"
                     onClick={handleSignup}
-                    className="w-full rounded-lg bg-cyan-600 px-4 py-2.5 font-semibold text-white transition hover:bg-cyan-700"
+                    disabled={isSubmitting}
+                    className="w-full rounded-lg bg-cyan-600 px-4 py-2.5 font-semibold text-white transition hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                    Sign up
+                    {isSubmitting ? "Creating account..." : "Sign up"}
                 </button>
+
+                {errorMessage && (
+                    <p className="text-sm font-medium text-rose-600">{errorMessage}</p>
+                )}
             </div>
         </div>
     );
