@@ -20,7 +20,7 @@ export function SideBar() {
           return (
           <NavLink
             key={card.name}
-            to={card.route}
+            to={`/${card.route}/${card.operations[0]}`}
             className={({ isActive }) =>
               `group flex items-center justify-between rounded-xl border px-4 py-3.5 transition ${
                 isActive
