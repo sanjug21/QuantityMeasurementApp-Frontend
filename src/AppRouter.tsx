@@ -22,17 +22,9 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={APP_ROUTES.home} element={<WelcomePage />} />
-        <Route
-          path={APP_ROUTES.dashboard}
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        >
+        <Route path={APP_ROUTES.home} element={<DashboardPage />}>
           <Route index element={<Navigate to={DASHBOARD_ROUTES.length} replace />} />
-          <Route path={DASHBOARD_ROUTES.history} element={<HistoryPage />} />
+          <Route path={DASHBOARD_ROUTES.history} element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
           {measurementCards.map((card) => (
             <Route key={card.route}>
               <Route path={card.route} element={<Navigate to={card.operations[0]} replace />} />
@@ -51,6 +43,7 @@ function AppRouter() {
             </Route>
           ))}
         </Route>
+        <Route path={APP_ROUTES.auth} element={<WelcomePage />} />
         <Route path="*" element={<Navigate to={APP_ROUTES.home} replace />} />
       </Routes>
     </BrowserRouter>

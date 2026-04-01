@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginForm from "../component/auth/LoginForm";
 import SignupForm from "../component/auth/SignupForm";
+import { APP_ROUTES } from "../routes";
 import type { WelcomeTabModel } from "../types/models/WelcomeTabModel";
 
 function WelcomePage() {
   const [activeTab, setActiveTab] = useState<WelcomeTabModel>("login");
+  const navigate = useNavigate();
 
   return (
     <main className="grid min-h-screen place-items-center bg-[radial-gradient(circle_at_20%_15%,#fde68a_0,rgba(253,230,138,0.25)_26%,transparent_50%),radial-gradient(circle_at_80%_85%,#99f6e4_0,rgba(153,246,228,0.22)_28%,transparent_54%),linear-gradient(120deg,#0f172a_0%,#111827_40%,#1f2937_100%)] p-6 text-slate-200">
@@ -51,6 +54,14 @@ function WelcomePage() {
               {activeTab === "login" ? <LoginForm /> : <SignupForm />}
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => navigate(APP_ROUTES.home)}
+            className="mt-4 w-full rounded-lg border border-slate-400 bg-slate-800 px-4 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
+          >
+            Continue as Guest
+          </button>
         </div>
       </section>
     </main>
