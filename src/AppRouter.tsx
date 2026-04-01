@@ -23,26 +23,39 @@ function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path={APP_ROUTES.home} element={<DashboardPage />}>
-          <Route index element={<Navigate to={DASHBOARD_ROUTES.length} replace />} />
-          <Route path={DASHBOARD_ROUTES.history} element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
+          <Route index element={<Navigate to={`${DASHBOARD_ROUTES.length}/compare`} replace />} />
+          <Route
+            path={DASHBOARD_ROUTES.history}
+            element={
+              <ProtectedRoute>
+                <HistoryPage />
+              </ProtectedRoute>
+            }
+          />
           {measurementCards.map((card) => (
-            <Route key={card.route}>
-              <Route path={card.route} element={<Navigate to={card.operations[0]} replace />} />
-              <Route
-                path={`${card.route}/:operation`}
-                element={
-                  <CategoryPanel
-                    categoryRoute={card.route}
-                    title={card.name}
-                    description={card.description}
-                    quantities={card.quantities}
-                    operations={card.operations}
-                  />
-                }
-              />
-            </Route>
+            <Route
+              key={`${card.route}-index`}
+              path={card.route}
+              element={<Navigate to={`${card.route}/${card.operations[0]}`} replace />}
+            />
+          ))}
+          {measurementCards.map((card) => (
+            <Route
+              key={`${card.route}-operation`}
+              path={`${card.route}/:operation`}
+              element={
+                <CategoryPanel
+                  categoryRoute={card.route}
+                  title={card.name}
+                  description={card.description}
+                  quantities={card.quantities}
+                  operations={card.operations}
+                />
+              }
+            />
           ))}
         </Route>
+
         <Route path={APP_ROUTES.auth} element={<WelcomePage />} />
         <Route path="*" element={<Navigate to={APP_ROUTES.home} replace />} />
       </Routes>

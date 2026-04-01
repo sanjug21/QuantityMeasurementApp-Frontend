@@ -27,7 +27,7 @@ export function CategoryPanel({
       <select
         value={selectedOperation}
         onChange={(event) =>
-          navigate(`/dashboard/${categoryRoute}/${event.target.value}`)
+          navigate(`/${categoryRoute}/${event.target.value}`)
         }
         className="mt-3 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-semibold capitalize text-slate-700 outline-none focus:border-cyan-400/60"
       >
