@@ -7,7 +7,7 @@ import { APP_ROUTES, DASHBOARD_ROUTES } from "../../routes";
 export function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const navigate = useNavigate();
-    const { username, logout } = useAuth();
+    const { isAuthenticated, username, logout } = useAuth();
 
     const handleLogout = () => {
         logout();
@@ -17,7 +17,12 @@ export function NavBar() {
 
     const handleHistory = () => {
         setIsMenuOpen(false);
-        navigate(`${APP_ROUTES.dashboard}/${DASHBOARD_ROUTES.history}`);
+        navigate(`${APP_ROUTES.home}/${DASHBOARD_ROUTES.history}`);
+    };
+
+    const handleLogin = () => {
+        setIsMenuOpen(false);
+        navigate(APP_ROUTES.auth);
     };
 
     return (
@@ -36,34 +41,46 @@ export function NavBar() {
                     </div>
 
                     <div className="relative flex items-center gap-3">
-                        <p className="text-sm font-medium text-slate-100">
-                            Welcome, <span className="font-semibold text-cyan-200">{username ?? "User"}</span>
-                        </p>
-                        <button
-                            type="button"
-                            onClick={() => setIsMenuOpen((prev) => !prev)}
-                            className="rounded-lg border border-slate-600 bg-slate-900/80 px-3 py-1.5 text-sm font-semibold text-slate-100 transition hover:bg-slate-800"
-                        >
-                            Menu
-                        </button>
+                        {isAuthenticated ? (
+                            <>
+                                <p className="text-sm font-medium text-slate-100">
+                                    Welcome, <span className="font-semibold text-cyan-200">{username ?? "User"}</span>
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsMenuOpen((prev) => !prev)}
+                                    className="rounded-lg border border-slate-600 bg-slate-900/80 px-3 py-1.5 text-sm font-semibold text-slate-100 transition hover:bg-slate-800"
+                                >
+                                    Menu
+                                </button>
 
-                        {isMenuOpen && (
-                            <div className="absolute right-0 top-11 w-40 rounded-lg border border-slate-700 bg-slate-900 p-1.5 shadow-xl">
-                                <button
-                                    type="button"
-                                    onClick={handleHistory}
-                                    className="w-full rounded-md px-3 py-2 text-left text-sm font-medium text-slate-100 transition hover:bg-slate-800"
-                                >
-                                    History
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleLogout}
-                                    className="w-full rounded-md px-3 py-2 text-left text-sm font-medium text-rose-300 transition hover:bg-slate-800"
-                                >
-                                    Logout
-                                </button>
-                            </div>
+                                {isMenuOpen && (
+                                    <div className="absolute right-0 top-11 w-40 rounded-lg border border-slate-700 bg-slate-900 p-1.5 shadow-xl">
+                                        <button
+                                            type="button"
+                                            onClick={handleHistory}
+                                            className="w-full rounded-md px-3 py-2 text-left text-sm font-medium text-slate-100 transition hover:bg-slate-800"
+                                        >
+                                            History
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleLogout}
+                                            className="w-full rounded-md px-3 py-2 text-left text-sm font-medium text-rose-300 transition hover:bg-slate-800"
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={handleLogin}
+                                className="rounded-lg border border-slate-600 bg-slate-900/80 px-3 py-1.5 text-sm font-semibold text-slate-100 transition hover:bg-slate-800"
+                            >
+                                Login
+                            </button>
                         )}
                     </div>
 
