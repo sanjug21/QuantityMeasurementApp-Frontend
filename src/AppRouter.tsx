@@ -5,6 +5,7 @@ import { CategoryPanel } from "./component/dashboard/CategoryPanel";
 import { useAuth } from "./context/AuthContext";
 import DashboardPage from "./pages/DashboardPage";
 import HistoryPage from "./pages/HistoryPage";
+import OAuthRedirectPage from "./pages/OAuthRedirectPage";
 import WelcomePage from "./pages/WelcomePage";
 import { APP_ROUTES, DASHBOARD_ROUTES } from "./routes";
 
@@ -57,6 +58,7 @@ function AppRouter() {
         </Route>
 
         <Route path={APP_ROUTES.auth} element={<WelcomePage />} />
+        <Route path={APP_ROUTES.oauthRedirect} element={<OAuthRedirectPage />} />
         <Route path="*" element={<Navigate to={APP_ROUTES.home} replace />} />
       </Routes>
     </BrowserRouter>

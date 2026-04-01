@@ -1,5 +1,6 @@
 import { API_ENDPOINTS, apiClient } from "./apiClient";
 import type {
+  GoogleLoginRequestModel,
   LoginRequestModel,
   SignupRequestModel,
   TokenResponseModel,
@@ -28,6 +29,13 @@ export async function login(payload: LoginRequestModel): Promise<string> {
 
 export async function signup(payload: SignupRequestModel): Promise<string> {
   const response = await apiClient.post<TokenResponseModel>(API_ENDPOINTS.auth.signup, payload);
+  return normalizeTokenResponse(response.data);
+}
+
+export async function loginWithGoogle(payload: GoogleLoginRequestModel): Promise<string> {
+  const response = await apiClient.post<TokenResponseModel>(API_ENDPOINTS.auth.google, {
+    credential: payload.idToken,
+  });
   return normalizeTokenResponse(response.data);
 }
 
