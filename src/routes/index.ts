@@ -1,6 +1,7 @@
 export const APP_ROUTES = {
   home: "/",
   auth: "/auth",
+  oauthRedirect: "/oauth2/redirect",
   dashboard: "/dashboard",
 } as const;
 

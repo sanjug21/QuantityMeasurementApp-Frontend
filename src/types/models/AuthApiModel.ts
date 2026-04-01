@@ -9,6 +9,10 @@ export type SignupRequestModel = {
   password: string;
 };
 
+export type GoogleLoginRequestModel = {
+  idToken: string;
+};
+
 export type TokenResponseModel = string | { token: string };
 
 export type UserModel = {

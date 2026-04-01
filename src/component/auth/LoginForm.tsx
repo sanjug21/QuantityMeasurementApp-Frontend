@@ -12,7 +12,9 @@ function LoginForm() {
     const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isGoogleRedirecting, setIsGoogleRedirecting] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "http://localhost:8080";
 
     function handelEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
         setEmail(event.target.value);
@@ -45,6 +47,12 @@ function LoginForm() {
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    const handleGoogleLoginRedirect = () => {
+        setErrorMessage("");
+        setIsGoogleRedirecting(true);
+        window.location.assign(`${apiBaseUrl}/oauth2/authorization/google`);
     };
 
     return (
@@ -95,10 +103,25 @@ function LoginForm() {
                 <button
                     type="button"
                     onClick={handleLogin}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isGoogleRedirecting}
                     className="w-full rounded-lg bg-cyan-600 px-4 py-2.5 font-semibold text-white transition hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                     {isSubmitting ? "Logging in..." : "Login"}
+                </button>
+
+                <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                    <span className="h-px flex-1 bg-slate-200" />
+                    or
+                    <span className="h-px flex-1 bg-slate-200" />
+                </div>
+
+                <button
+                    type="button"
+                    onClick={handleGoogleLoginRedirect}
+                    disabled={isSubmitting || isGoogleRedirecting}
+                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                    {isGoogleRedirecting ? "Redirecting to Google..." : "Continue with Google"}
                 </button>
 
                 {errorMessage && (

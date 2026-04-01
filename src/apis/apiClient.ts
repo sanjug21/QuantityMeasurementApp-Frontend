@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   auth: {
     login: "/api/auth/login",
     signup: "/api/auth/signup",
+    google: "/api/auth/google",
     me: "/api/auth/me",
   },
   quantity: {
