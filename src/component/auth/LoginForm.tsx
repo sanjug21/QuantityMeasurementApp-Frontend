@@ -118,7 +118,8 @@ function LoginForm() {
                 <button
                     type="button"
                     onClick={handleGoogleLoginRedirect}
-                    disabled={isSubmitting || isGoogleRedirecting}
+                    // disabled={isSubmitting || isGoogleRedirecting}
+                    disabled={true}
                     className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                     {isGoogleRedirecting ? "Redirecting to Google..." : "Continue with Google"}
