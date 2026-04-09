@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { OperationCardProps } from "../../types/props/OperationCardProps";
 import { computeMeasurement } from "../../apis/measurementApi";
 
@@ -9,6 +9,14 @@ export function OtherOperationsCard({ quantities, operation, quantityType }: Ope
   const [secondUnit, setSecondUnit] = useState<string>(quantities[1] ?? quantities[0] ?? "");
   const [resultText, setResultText] = useState<string>("");
   const [isComputing, setIsComputing] = useState<boolean>(false);
+
+  useEffect(() => {
+    setFirstValue("");
+    setSecondValue("");
+    setFirstUnit(quantities[0] ?? "");
+    setSecondUnit(quantities[1] ?? quantities[0] ?? "");
+    setResultText("");
+  }, [quantities, quantityType, operation]);
 
   const handleReset = () => {
     setFirstValue("");

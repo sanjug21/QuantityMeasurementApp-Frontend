@@ -41,6 +41,7 @@ export function CategoryPanel({
       <div className="mt-5 flex-1 overflow-y-auto pr-1">
         <div className={isConvert ? "block" : "hidden"}>
           <ConvertOperationCard
+            key={`${categoryRoute}-${selectedOperation}-convert`}
             quantities={quantities}
             operation={selectedOperation}
             quantityType={categoryRoute}
@@ -48,6 +49,7 @@ export function CategoryPanel({
         </div>
         <div className={isConvert ? "hidden" : "block"}>
           <OtherOperationsCard
+            key={`${categoryRoute}-${selectedOperation}-other`}
             quantities={quantities}
             operation={selectedOperation}
             quantityType={categoryRoute}
